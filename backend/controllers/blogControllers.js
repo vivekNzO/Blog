@@ -47,7 +47,7 @@ export const deleteBlog = async(req,res)=>{
         const {id} = req.params
         const blog = await Blog.findByIdAndDelete(id)
         if(!blog)return res.status(400).json({message:"blog not found"})
-        res.json({blog})
+        res.json({message:"Blog deleted successfully",blog})
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"Error in delete handler"})

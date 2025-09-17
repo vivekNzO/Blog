@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: Blog API Documentation
+  version: 1.0.0
+
+servers:
+- url: http://localhost:5000
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
+
+tags:
+- name: Authentication
+  description: Auth endpoints
+- name: Blogs
+  description: Blogs management endpoints
+
+paths:
+  /blog/create:
+    post:
+      summary: Endpoint to create a new blog
+      tags: [ Blogs ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - content
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              example:
+                title: Blog title
+                content: Blog content
+      responses:
+        '201':
+          description: Blog created successfully
+        '401':
+          description: Unauthorized
+
+  /blog/read:
+    get:
+      summary: Fetch all blogs to read
+      tags: [ Blogs ]
+
+      responses:
+        '200':
+          description: All blogs fetched successfully
+
+  /blogs/update/{id}:
+    put:
+      summary: Update an already existing blog
+      tags: [ Blogs ]
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Blog ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+
+      responses:
+        '200':
+          description: Blog updated successfully
+        '401':
+          description: Unauthorized user
+
+  /blog/delete/{id}:
+    delete:
+      summary: Endpoint to delete a particular blog
+      tags: [ Blogs ]
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Blog ID
+
+      responses:
+        '200':
+          description: Blog deleted successfully
+        '401':
+          description: Unauthorized user
+
+  # AUTHENTICATION ROUTES
+  /auth/signup:
+    post:
+      summary: Register a new user
+      tags: [ Authentication ]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - username
+              - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              example:
+                username: John Doe
+                password: Password
+
+      responses:
+        '201':
+          description: Account created successfully
+        '400':
+          description: Invalid Input
+
+  /auth/login:
+    post:
+      summary: Login already existing user
+      tags: [ Authentication ]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - username
+              - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              example:
+                username: John Doe
+                password: Password
+      responses:
+        '200':
+          description: Logged in successfully
+        '400':
+          description: Invalid credentials
+
+  /auth/logout:
+    post:
+      summary: Log out from your device
+      tags: [ Authentication ]
+      security: []
+      responses:
+        '200':
+          description: User logged out successfully
+        '401':
+          description: Unauthorized User

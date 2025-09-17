@@ -12,8 +12,13 @@ export const handleSignUp = async (req,res)=>{
             password
         })
         await newUser.save()
-        generateToken(username,res)
-        res.status(201).json({message:newUser})
+        const token = generateToken(username,res)
+        res.status(201).json({message:"User created Successfully",
+            user:{
+                newUser
+            },
+            token
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"error in SignUp controller"})
@@ -27,8 +32,11 @@ export const handleLogin = async(req,res)=>{
         const user = await User.findOne({username})
         if(!user)return res.status(401).json({message:"Account does not exist"})
         if(password!=user.password)return res.status(401).json({message:"Invalid credentials"})
-        generateToken(username,res)
-        res.status(200).json({message:user})
+        const token = generateToken(username,res)
+        res.status(200).json({message:"Logged in successfully",
+            user:{user},
+            token
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"Error in Login Controller"})
@@ -37,8 +45,10 @@ export const handleLogin = async(req,res)=>{
 
 export const handleLogout = async(req,res)=>{
     try {
-        res.cookie("jwt","",{
-            maxAge:0
+        res.clearCookie("jwt",{
+            httpOnly : true,
+            sameSite : true
+            
         })
         res.status(200).json({message:"Logged out successfully"})
     } catch (error) {
