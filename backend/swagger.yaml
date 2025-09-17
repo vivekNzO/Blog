@@ -14,7 +14,7 @@ components:
       bearerFormat: JWT
 
 security:
-  - BearerAuth: []
+- BearerAuth: []
 
 tags:
 - name: Authentication
@@ -58,6 +58,8 @@ paths:
       responses:
         '200':
           description: All blogs fetched successfully
+        '401':
+          description: Unauthorized User
 
   /blogs/update/{id}:
     put:
@@ -174,3 +176,14 @@ paths:
           description: User logged out successfully
         '401':
           description: Unauthorized User
+
+  /auth/me:
+    get:
+      summary: get details of current user
+      tags: [ Authentication ]
+      security: []
+      responses:
+        '200':
+          description: Details fetched successfully
+        '401':
+          description: Unauthorized user

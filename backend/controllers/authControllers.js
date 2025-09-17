@@ -14,9 +14,7 @@ export const handleSignUp = async (req,res)=>{
         await newUser.save()
         const token = generateToken(username,res)
         res.status(201).json({message:"User created Successfully",
-            user:{
-                newUser
-            },
+            newUser,
             token
         })
     } catch (error) {
@@ -34,7 +32,7 @@ export const handleLogin = async(req,res)=>{
         if(password!=user.password)return res.status(401).json({message:"Invalid credentials"})
         const token = generateToken(username,res)
         res.status(200).json({message:"Logged in successfully",
-            user:{user},
+            user,
             token
         })
     } catch (error) {
@@ -54,5 +52,14 @@ export const handleLogout = async(req,res)=>{
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"Error in Logout Controller"})
+    }
+}
+
+export const handleMe= async(req,res)=>{
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message:"Error in handle Me handler"})
     }
 }
