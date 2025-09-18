@@ -6,19 +6,20 @@ export const AuthContext = createContext()
 // provider
 export const AuthProvider = ({children})=>{
     const [authUser,setAuthUser] = useState(null)
-
+    const [loading,setLoading] = useState(true)
     useEffect(()=>{
         const checkAuth = async()=>{
             try {
                 const res = await API.get("/auth/me")
-                console.log(res)
                 setAuthUser(res.data.username)
             } catch (error) {
                 setAuthUser(null)
+            }finally{
+                setLoading(false)
             }
         }
         checkAuth()
-    },[])
+    },[authUser])
 
     const signup = async(username,password)=>{
         try {
@@ -51,7 +52,7 @@ export const AuthProvider = ({children})=>{
     }
 
     return(
-        <AuthContext.Provider value={{authUser,setAuthUser,signup,login,logout}}>
+        <AuthContext.Provider value={{authUser,setAuthUser,signup,login,logout,loading}}>
         {children}
         </AuthContext.Provider>
     )

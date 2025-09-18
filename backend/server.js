@@ -9,6 +9,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { authMiddleware } from './middlewares/authMiddleware.js';
+import { initDB } from './lib/initDB.js';
 // import swagger from './swagger.js';
 
 const app = express();
@@ -40,5 +41,6 @@ app.use("/blog",authMiddleware,blogRoutes)
 app.listen(PORT,()=>{
     console.log(`Server is running on PORT `+PORT);
     connectDB()
+    initDB()
 })
 

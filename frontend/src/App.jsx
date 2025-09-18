@@ -9,10 +9,18 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import HomePage from './Pages/HomePage'
 import Login from './Pages/Login'
 import SignUp from './Pages/SignUp'
+import EditBlog from './Pages/EditBlog'
+import CreateBlog from './Pages/CreateBlog'
+import MyBlogs from './Pages/MyBlogs'
 
 function App() {
 
-  const {authUser,setAuthUser} = useContext(AuthContext)
+  const {authUser,setAuthUser,loading} = useContext(AuthContext)
+
+    if (loading) {
+    return <p>Loading...</p>   // prevents premature redirect
+  }
+
   console.log(authUser)
 
   return (
@@ -21,8 +29,11 @@ function App() {
       <Routes>
         <Route path="/" element={authUser?<HomePage/>:<Navigate to="/login"/>} />
         <Route path="/login" element={!authUser?<Login/>:<Navigate to="/"/>} />
-        <Route path="/signup" element={authUser?<SignUp/>:<Navigate to="/"/>} />
-      </Routes>
+        <Route path="/signup" element={!authUser?<SignUp/>:<Navigate to="/"/>} />
+        <Route path="/blog/update/:id" element={authUser?<EditBlog/>:<Navigate to="/login" />}/>
+        <Route path='/blog/createblog' element={authUser?<CreateBlog/>:<Navigate to="/login"/>} />
+        <Route path='/blog/myblogs' element={authUser?<MyBlogs/>:<Navigate to="/login"/>} />
+      </Routes> 
     </>
   )
 }

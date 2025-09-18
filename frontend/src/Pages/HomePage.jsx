@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import DisplayBlogs from '../components/DisplayBlogs'
+import { AuthContext } from '../store/AuthContext'
 
 const HomePage = () => {
+
+  const {authUser} = useContext(AuthContext)
   return (
-    <div>HomePage</div>
+    <div style={{margin:"24px 64px"}}>
+      <h1>{`Welcome ${authUser}`}</h1>
+      <DisplayBlogs/>
+    </div>
   )
 }
 

@@ -1,19 +1,23 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../store/AuthContext'
+import { Link, useNavigate } from 'react-router-dom'
+import '../styles/formStyles.css'
 
 const Login = () => {
 
     const {login} = useContext(AuthContext)
+    const navigate = useNavigate()
 
     const[username,setUserName] = useState("")
     const[password,setPassword] = useState("")
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
-        login({username,password})
+        login(username,password)
     }
+    
   return (
-    <div>
+    <div className='form-style'>
         <h1>Login Page</h1>
         <form onSubmit={handleSubmit}>
             <div>
@@ -22,6 +26,7 @@ const Login = () => {
                     type='text'
                     value={username}
                     required
+                    placeholder='John Doe'
                     onChange={(e)=>setUserName(e.target.value)}
                 />
             </div>
@@ -31,6 +36,7 @@ const Login = () => {
                 <input
                     type='password'
                     value={password}
+                    placeholder='********'
                     onChange={(e)=>setPassword(e.target.value)}
                     required
                 />
@@ -38,6 +44,10 @@ const Login = () => {
 
             <button type='submit'>Login</button>
         </form>
+
+        <Link to="/signup">
+            <span>Don't have an account? Sign Up </span> 
+        </Link>
     </div>
   )
 }

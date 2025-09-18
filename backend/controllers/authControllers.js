@@ -5,6 +5,7 @@ export const handleSignUp = async (req,res)=>{
     const {username,password} = req.body
     try {
         if(!username || !password)return res.status(401).json({message:"All fields are required"})
+            
         const user = await User.findOne({username})
         if(user)return res.status(401).json({message:"Account already exists you should try loggin in"})
         const newUser = new User({

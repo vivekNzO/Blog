@@ -61,7 +61,7 @@ paths:
         '401':
           description: Unauthorized User
 
-  /blogs/update/{id}:
+  /blog/update/{id}:
     put:
       summary: Update an already existing blog
       tags: [ Blogs ]
