@@ -24,6 +24,20 @@ export const initDB = async()=>{
             )
             `)
 
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS delete_requests(
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                blog_id INT NOT NULL,
+                user_id INT NOT NULL,
+                reason TEXT NOT NULL,
+                status ENUM('pending','approved','rejected') DEFAULT 'pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (blog_id) REFERENCES blogs(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+
+            `)
+
             console.log("Database initialized successfully")
     } catch (error) {
         console.log("Error initializing database",error)

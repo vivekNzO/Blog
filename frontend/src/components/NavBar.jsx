@@ -5,12 +5,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import "../styles/createblog.css"
 
 const NavBar = () => {
-  const {logout,authUser} = useContext(AuthContext)
+  const {logout,authUser,setAuthUser} = useContext(AuthContext)
   const navigate = useNavigate();
   return (
     <div className='header'>
         <h1 onClick={()=>navigate("/") }>BLOG APPLICATION</h1>
         <div>
+
+        {authUser?.role==='admin' && 
+        <button onClick={()=>navigate("/admin/dashboard")}>Dashboard</button>
+        }
         {authUser &&
           <button
           onClick={()=>navigate("/blog/createblog")}
@@ -21,6 +25,8 @@ const NavBar = () => {
           My Blogs
         </button>
         }
+
+
 
             {!authUser? 
             <Link to={"/login"}>

@@ -11,7 +11,7 @@ export const AuthProvider = ({children})=>{
         const checkAuth = async()=>{
             try {
                 const res = await API.get("/auth/me")
-                setAuthUser(res.data.username)
+                setAuthUser(res.data)
             } catch (error) {
                 setAuthUser(null)
             }finally{
@@ -19,12 +19,12 @@ export const AuthProvider = ({children})=>{
             }
         }
         checkAuth()
-    },[authUser])
+    },[])
 
     const signup = async(username,password)=>{
         try {
             const res = await API.post("/auth/signup",{username,password})
-            setAuthUser(res.data.username)
+            setAuthUser(res.data)
             return res.data
         } catch (error) {
             console.log(error)
@@ -34,7 +34,7 @@ export const AuthProvider = ({children})=>{
     const login = async(username,password)=>{
         try {
             const res = await API.post("/auth/login",{username,password})
-            setAuthUser(res.data.username)
+            setAuthUser(res.data)
             console.log(res)
             return res.data
         } catch (error) {

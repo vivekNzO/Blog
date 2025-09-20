@@ -21,6 +21,8 @@ tags:
   description: Auth endpoints
 - name: Blogs
   description: Blogs management endpoints
+- name: Admin
+  description: Admin endpoints
 
 paths:
   /blog/create:
@@ -108,6 +110,37 @@ paths:
         '401':
           description: Unauthorized user
 
+  /blog/{id}/requestDelete:
+    post:
+      tags: [ Blogs ]
+      summary: Request to delete a particular blog
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Blog Id of the blog user wants to delete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  example: "This blog contains outdated information"
+      responses:
+        '200':
+          description: Delete request submitted successfully
+        '404':
+          description: Blog not found or not owned by the user
+        '500':
+          description: Internal server error
+
   # AUTHENTICATION ROUTES
   /auth/signup:
     post:
@@ -187,3 +220,58 @@ paths:
           description: Details fetched successfully
         '401':
           description: Unauthorized user
+
+  # ADMIN ENDPOINTS
+  /admin/delete-requests:
+    get:
+      tags: [ Admin ]
+      summary: Get all delete requests
+      description: Fetch all delete requests from users
+      responses:
+        '200':
+          description: All delete requests fetched successfully
+        '404':
+          description: No delete requests found
+        '500':
+          description: Internal server error
+
+  /admin/delete-requests/{requestId}/approved:
+    post:
+      tags: [ Admin ]
+      summary: Approve delete request
+      description: Approve the delete request send by user
+      parameters:
+      - in: path
+        name: requestId
+        schema:
+          type: string
+        required: true
+        description: ID of the delete request
+      responses:
+        '200':
+          description: Request approved and blog deleted
+        '404':
+          description: Request not found
+        '500':
+          description: Internal server error
+
+  /admin/delete-requests/{requestId}/rejected:
+    post:
+      tags: [ Admin ]
+      summary: Reject delete request
+      description: Reject the delete request sent by user
+      parameters:
+      - in: path
+        name: requestId
+        schema:
+          type: string
+        required: true
+        description: ID of delete request
+
+      responses:
+        '200':
+          description: Request rejected successfully
+        '404':
+          description: Request not found
+        '500':
+          description: Internal server error

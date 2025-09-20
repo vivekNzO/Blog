@@ -7,7 +7,7 @@ const HomePage = () => {
   const {authUser} = useContext(AuthContext)
   return (
     <div style={{margin:"24px 64px"}}>
-      <h1>{`Welcome ${authUser}`}</h1>
+      <h1>{`Welcome ${authUser.username}`}</h1>
       <DisplayBlogs/>
     </div>
   )

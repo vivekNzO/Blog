@@ -13,8 +13,8 @@ const EditBlog = () => {
         const fetchBlogs = async()=>{
             try {
                 const res = await API.get("/blog/read")
-                console.log(res)
-                const blog = res.data.blogs.find((item)=>item._id===id)
+                // console.log(res)
+                const blog = res.data.find((item)=>item.id==id)
                 if(blog){
                     setTitle(blog.title)
                     setContent(blog.content)

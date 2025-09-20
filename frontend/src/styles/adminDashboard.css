@@ -1,0 +1,63 @@
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.requests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.request-card {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.request-card:hover {
+  transform: translateY(-5px);
+}
+
+.request-card strong {
+  color: #333;
+}
+
+.request-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.request-actions button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.request-actions button:first-child {
+  background-color: #28a745;
+  color: white;
+}
+
+.request-actions button:first-child:hover {
+  background-color: #218838;
+}
+
+.request-actions button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+.request-actions button:last-child:hover {
+  background-color: #c82333;
+}

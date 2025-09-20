@@ -1,73 +1,139 @@
-import Blog from "../model/blogModel.js"
+import pool from "../config/db.js";
+import Blog from "../model/blogModel.js";
 
-export const createBlog = async(req,res)=>{
-    const {title,content} = req.body
-    try {
-        if(!title || !content)return res.status(400).json({message:"All fields are required"})
-        const blog = new Blog({
-            title,
-            content,
-            author:req.user._id
-        })
-        await blog.save()
-        res.status(201).json({data:blog})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message:"Error in create blog handler"})
-    }
-}
-export const readBlogs = async(req,res)=>{
-    try {
-        const blogs = await Blog.find().populate("author","username ")
-        res.status(200).json({blogs})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({message:"Internal server error in read Blog handler"})
-    }
-}
-
+export const createBlog = async (req, res) => {
+  const { title, content } = req.body;
+  const userId = req.user.id;
+  try {
+    if (!title || !content)
+      return res.status(400).json({ message: "All fields are required" });
+    const [result] = await pool.query(
+      "INSERT INTO blogs (title, content, author_id) VALUES (?,?,?)",
+      [title, content, userId]
+    );
+    res.status(201).json({ message: "Blog Created Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error in create blog handler" });
+  }
+};
+export const readBlogs = async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT blogs.* , users.username FROM 
+      blogs JOIN users ON blogs.author_id = users.id
+      `);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.log("Error in Read Blogs handler", error);
+    res.status(500).json({ message: "Error reading blogs" });
+  }
+};
 
 export const updateBlog = async (req, res) => {
   try {
-    const { id } = req.params;
     const { title, content } = req.body;
-
-    if (!title || !content) {
+    const { id } = req.params;
+    if (!title || !content)
       return res.status(400).json({ message: "All fields are required" });
+    const [rows] = await pool.query(
+      `
+    SELECT * FROM blogs WHERE id = ?
+  `,
+      [id]
+    );
+    if (rows.length === 0)
+      return res.status(404).json({ message: "Blogs not found" });
+    const blog = rows[0];
+    // check for user or admin
+    if (req.user.role !== "admin" && blog.author_id !== req.user.id) {
+      return res
+        .status(403)
+        .json({ message: "Forbidden : not allowed to update this blog" });
     }
+    const [result] = await pool.query(
+      `
+      UPDATE blogs SET title = ?, content = ? WHERE id = ?  
+      `,
+      [title, content, id]
+    );
 
-    const blog = await Blog.findById(id);
-    if (!blog) return res.status(404).json({ message: "Blog not found" });
-
-    if (blog.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not authorized to update this blog" });
-    }
-    blog.title = title;
-    blog.content = content;
-    await blog.save();
-
-    res.status(200).json({ message: "Blog updated successfully", blog });
+    res.status(200).json({ message: "Blog updated successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error in update Blog handler" });
+    console.log("Error in updatBlog handler", error);
+    res.status(500).json({ message: "Error updating Blogs" });
   }
 };
-
 
 export const deleteBlog = async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id);
-    if (!blog) return res.status(404).json({ message: "Blog not found" });
-
-    if (blog.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not authorized to delete this blog" });
+    const { id } = req.params;
+    const [rows] = await pool.query(
+      `
+      SELECT * FROM blogs WHERE id = ?
+      `,
+      [id]
+    );
+    if (rows.length === 0)
+      return res.status(404).json({ message: "Blog does not exists" });
+    const blog = rows[0];
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden Action" });
     }
-
-    await blog.deleteOne();
-    res.status(200).json({ message: "Blog deleted successfully" });
+    await pool.query(
+      `
+        DELETE FROM blogs WHERE id = ?
+      `,
+      [id]
+    );
+    res.status(200).json({ message: "Blog deleted Successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error deleting blog" });
+    console.log("Error in delete blog handler", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
+export const requestDeleteBlog = async (req, res) => {
+  try {
+    const { id: blogId } = req.params;
+    const { reason } = req.body;
+    const userId = req.user.id;
+
+    const [blogs] = await pool.query(
+      `
+      SELECT * FROM blogs WHERE id = ? AND author_id = ?
+      `,
+      [blogId, userId]
+    );
+    if (blogs.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "You can only request to delete your own blogs" });
+    }
+
+    const [existingRequest] = await pool.query(
+      `SELECT * FROM delete_requests 
+       WHERE blog_id = ? AND user_id = ? AND status = 'pending'`,
+      [blogId, userId]
+    );
+
+    if (existingRequest.length > 0) {
+      return res
+        .status(400)
+        .json({
+          message: "You already have a pending delete request for this blog",
+        });
+    }
+    await pool.query(
+      `
+      INSERT INTO delete_requests (blog_id,user_id,reason) VALUES(?,?,?)
+      `,
+      [blogId, userId, reason]
+    );
+
+    res.status(201).json({ message: "Delete request submitted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error in request Delete handler" });
+  }
+};

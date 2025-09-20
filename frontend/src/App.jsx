@@ -12,6 +12,7 @@ import SignUp from './Pages/SignUp'
 import EditBlog from './Pages/EditBlog'
 import CreateBlog from './Pages/CreateBlog'
 import MyBlogs from './Pages/MyBlogs'
+import AdminDashboard from './Pages/AdminDashboard'
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/blog/update/:id" element={authUser?<EditBlog/>:<Navigate to="/login" />}/>
         <Route path='/blog/createblog' element={authUser?<CreateBlog/>:<Navigate to="/login"/>} />
         <Route path='/blog/myblogs' element={authUser?<MyBlogs/>:<Navigate to="/login"/>} />
+        <Route path='/admin/dashboard' element= {authUser?.role==='admin'?<AdminDashboard/>:<Navigate to="/login"/>}/>
       </Routes> 
     </>
   )
