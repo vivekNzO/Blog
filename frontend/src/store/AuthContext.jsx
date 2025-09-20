@@ -24,9 +24,11 @@ export const AuthProvider = ({children})=>{
     const signup = async(username,password)=>{
         try {
             const res = await API.post("/auth/signup",{username,password})
-            setAuthUser(res.data)
+            setAuthUser(res.data.user)
             return res.data
         } catch (error) {
+            if(error.response?.data?.message==='User already exists')
+                alert("User already exists")
             console.log(error)
         }
     }
@@ -34,11 +36,12 @@ export const AuthProvider = ({children})=>{
     const login = async(username,password)=>{
         try {
             const res = await API.post("/auth/login",{username,password})
-            setAuthUser(res.data)
+            setAuthUser(res.data.user)
             console.log(res)
             return res.data
         } catch (error) {
             console.log(error)
+            alert("Invalid Credentials")
         }
     }
 
@@ -48,6 +51,7 @@ export const AuthProvider = ({children})=>{
             setAuthUser(null)
         } catch (error) {
             console.log(error)
+            alert("Logged out successfully")
         }
     }
 

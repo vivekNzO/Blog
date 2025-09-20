@@ -9,22 +9,22 @@ const EditBlog = () => {
     const {id} = useParams()
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        const fetchBlogs = async()=>{
-            try {
-                const res = await API.get("/blog/read")
-                // console.log(res)
-                const blog = res.data.find((item)=>item.id==id)
-                if(blog){
-                    setTitle(blog.title)
-                    setContent(blog.content)
+        useEffect(()=>{
+            const fetchBlogs = async()=>{
+                try {
+                    const res = await API.get("/blog/read")
+                    // console.log(res)
+                    const blog = res.data.find((item)=>item.id==id)
+                    if(blog){
+                        setTitle(blog.title)
+                        setContent(blog.content)
+                    }
+                } catch (error) {
+                    console.log("Error fetching blog",error)
                 }
-            } catch (error) {
-                console.log("Error fetching blog",error)
             }
-        }
-        fetchBlogs()
-    },[id])
+            fetchBlogs()
+        },[id])
 
     const handleUpdate = async(e)=>{
         e.preventDefault()
@@ -52,7 +52,7 @@ const EditBlog = () => {
         <textarea
             value={content}
             required
-            rows='6'
+            rows='16'
             onChange={(e)=>setContent(e.target.value)}
         />
     </div>

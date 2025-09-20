@@ -32,11 +32,10 @@ const MyBlogs = () => {
 
   const handleDelete = async (id) => {
     try {
-
-      if(authUser?.role==='admin'){
-        await API.delete(`/blog/delete/${id}`)
-        setBlogs(blogs.filter((b)=>b.id!==id))
-        return
+      if (authUser?.role === "admin") {
+        await API.delete(`/blog/delete/${id}`);
+        setBlogs(blogs.filter((b) => b.id !== id));
+        return;
       }
       const reason = window.prompt(
         "Please enter a reason for deleting this blog"
@@ -55,7 +54,7 @@ const MyBlogs = () => {
   };
 
   return (
-    <div>
+    <div style={{ margin: "48px" }}>
       <h1>My Blogs</h1>
       <div className="blogs-list">
         {blogs.length === 0 ? (
@@ -64,7 +63,19 @@ const MyBlogs = () => {
           blogs.map((blog) => (
             <div key={blog.id} className="blog-card">
               <h2>{blog.title}</h2>
-              <p>{blog.content}</p>
+              <p>
+                {blog.content.length > 500 ? (
+                  <>
+                    {blog.content.slice(0, 500)}{" "}
+                    <span style={{ color: "blue", cursor: "pointer" }}>
+                      {" "}
+                      Read more...
+                    </span>
+                  </>
+                ) : (
+                  blog.content
+                )}
+              </p>
               <div className="editable">
                 <button onClick={() => navigate(`/blog/update/${blog.id}`)}>
                   Edit

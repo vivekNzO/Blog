@@ -4,14 +4,15 @@
   align-items: center;
   justify-content: center;
   min-height: 80vh;
-  padding: 20px;
+  padding: 10px;
+  /* background-color: ; */
 }
 
 .edit-blog-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 400px;
+  width: 1020px;
   background: #fff;
   padding: 30px;
   border-radius: 10px;
@@ -40,4 +41,22 @@
 
 .edit-blog-form button:hover {
   background: #0056b3;
+}
+
+.header button{
+  background:none;
+  border:none
+}
+.header button:hover{
+  /* background: #f0f0f0; */
+  text-decoration: underline;
+}
+
+.header button.active{
+  background:#007bff;
+  color : #fff
+}
+
+.header{
+  background-color: #000B58;
 }

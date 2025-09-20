@@ -34,7 +34,7 @@ const CreateBlog = () => {
             <textarea
                 value={content}
                 onChange={(e)=>setContent(e.target.value)}
-                rows={'6'}
+                rows={'16'}
                 placeholder='Content'
                 required
             />

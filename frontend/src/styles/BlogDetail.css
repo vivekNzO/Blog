@@ -1,0 +1,34 @@
+.blog-detail {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  line-height: 1.8;
+  font-family: "Georgia", "Times New Roman", serif;
+  color: #333;
+}
+
+.blog-detail h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  line-height: 1.3;
+  font-family: "Merriweather", serif;
+  color: #111;
+}
+
+.blog-detail p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.blog-detail .author {
+  margin-top: 30px;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #555;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
