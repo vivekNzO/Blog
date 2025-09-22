@@ -14,6 +14,7 @@ import CreateBlog from './Pages/CreateBlog'
 import MyBlogs from './Pages/MyBlogs'
 import AdminDashboard from './Pages/AdminDashboard'
 import BlogDetail from './Pages/BlogDetail'
+import ViewRequest from './Pages/ViewRequest'
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route path='/blog/myblogs' element={authUser?<MyBlogs/>:<Navigate to="/login"/>} />
         <Route path='/admin/dashboard' element= {authUser?.role==='admin'?<AdminDashboard/>:<Navigate to="/login"/>}/>
         <Route path='/blog/:id' element={authUser? <BlogDetail/> : <Navigate to="/login"/>}/>
+        <Route  path='/viewRequest/:requestId' element={authUser? <ViewRequest/> : <Navigate to="/login" />} />
       </Routes> 
     </>
   )

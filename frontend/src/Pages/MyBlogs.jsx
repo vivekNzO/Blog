@@ -30,7 +30,8 @@ const MyBlogs = () => {
     }
   }, [authUser]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (e,id) => {
+    e.stopPropagation()
     try {
       if (authUser?.role === "admin") {
         await API.delete(`/blog/delete/${id}`);
@@ -61,7 +62,9 @@ const MyBlogs = () => {
           <p>You haven’t created any blogs yet.</p>
         ) : (
           blogs.map((blog) => (
-            <div key={blog.id} className="blog-card">
+            <div 
+            onClick={()=>navigate(`/blog/${blog.id}`)}
+             key={blog.id} className="blog-card">
               <h2>{blog.title}</h2>
               <p>
                 {blog.content.length > 500 ? (
@@ -77,10 +80,12 @@ const MyBlogs = () => {
                 )}
               </p>
               <div className="editable">
-                <button onClick={() => navigate(`/blog/update/${blog.id}`)}>
+                <button onClick={(e) =>{
+                  e.stopPropagation()
+                   navigate(`/blog/update/${blog.id}`)}}>
                   Edit
                 </button>
-                <button onClick={() => handleDelete(blog.id)}>Delete</button>
+                <button onClick={(e) => handleDelete(e,blog.id)}>Delete</button>
               </div>
             </div>
           ))

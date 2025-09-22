@@ -30,8 +30,12 @@ const EditBlog = () => {
         e.preventDefault()
         try {
             await API.put(`/blog/update/${id}`,{title,content})
+            alert("Blog update request submitted for approval")
             navigate("/")
         } catch (error) {
+            if(error.response.data.message === "You already have a pending request for this blog"){
+                alert("You already have a pending request for this blog")
+            }
             console.log("Error updating blog",error)
         }
     }

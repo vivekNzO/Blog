@@ -1,13 +1,13 @@
 import express from 'express'
-import { createBlog, deleteBlog, readBlogs, requestDeleteBlog, updateBlog } from '../controllers/blogControllers.js'
+import {  createBlogRequest, deleteBlog, readBlogs, requestDeleteBlog,  updateBlogRequest } from '../controllers/blogControllers.js'
 import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
 
-router.post("/create",createBlog)
+router.post("/create",createBlogRequest)
 router.get("/read",readBlogs)
-router.put("/update/:id",updateBlog)
+router.put("/update/:id",updateBlogRequest)
 router.delete("/delete/:id",deleteBlog)
 router.post("/:id/requestDelete",requestDeleteBlog)
 

@@ -16,7 +16,7 @@ const DisplayBlogs = () => {
     (a, b) => b.id-a.id
   );
 
-  const blogsPerPage = 16;
+  const blogsPerPage = 12;
   const totalPage = Math.ceil(blogsData.length / blogsPerPage);
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;

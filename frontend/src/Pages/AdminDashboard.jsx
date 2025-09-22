@@ -1,79 +1,88 @@
 import React, { useEffect, useState } from "react";
 import API from "../utils/axios";
 import "../styles/adminDashboard.css";
+import DeleteCard from "../components/DeleteCard";
+import UpdateCard from "../components/UpdateCard";
 
 const AdminDashboard = () => {
-  const [requests, setRequests] = useState([]);
+  const [manageRequestsData, setManageRequestsData] = useState([]);
 
-  const fetchRequests = async () => {
+  const fetchManageRequestsData = async () => {
     try {
-      const res = await API.get("/admin/delete-requests");
-      setRequests(res.data);
+      const res = await API.get("/admin/blog-requests");
+      setManageRequestsData(res.data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    fetchRequests();
+    fetchManageRequestsData();
   }, []);
 
-  useEffect(()=>{
-    console.log(requests)
-  },[requests])
+  useEffect(() => {
+    console.log(manageRequestsData);
+  }, [manageRequestsData]);
 
-  const handleApprove = async (requestId) => {
+  // const handleApprove = async (requestId) => {
+  //   try {
+  //     await API.post(`/admin/delete-requests/${requestId}/approved`);
+  //     setRequests(manageRequestsData.filter((r) => r.requestId !== requestId));
+  //     alert("Request approved and blog deleted");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const handleReject = async (requestId) => {
+  //   try {
+  //     await API.post(`/admin/delete-requests/${requestId}/rejected`);
+  //     setRequests(manageRequestsData.filter((r) => r.requestId !== requestId));
+  //     alert("Request rejected");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const handleBlogRequestApprove = async (requestId) => {
     try {
-      await API.post(`/admin/delete-requests/${requestId}/approved`);
-      setRequests(requests.filter((r) => r.requestId !== requestId));
-      alert("Request approved and blog deleted");
+      const res = await API.post(`/admin/blog-requests/${requestId}/approved`);
+      setManageRequestsData(
+        manageRequestsData.filter((item) => item.requestId !== requestId)
+      );
+      alert("Blog approved successfully");
     } catch (error) {
       console.log(error);
     }
   };
-
-  const handleReject = async (requestId) => {
+  const handleBlogRequestReject = async (requestId) => {
     try {
-      await API.post(`/admin/delete-requests/${requestId}/rejected`);
-      await fetchRequests()
-      setRequests(requests.filter((r) => r.requestId !== requestId));
-      alert("Request rejected");
+      const res = await API.post(`/admin/blog-requests/${requestId}/rejected`);
+      setManageRequestsData(
+        manageRequestsData.filter((item) => item.requestId !== requestId)
+      );
+      alert("Blog rejected successfully");
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <div className="dashboard-container">
-      <h1>Dashboard</h1>
-      {requests.length === 0 ? (
-        <div>No Requests pending</div>
-      ) : (
-        <div className="requests-grid">
-          {requests.map((item) => (
-            <div className="request-card" key={item.created_at}>
-              <strong>Blog:</strong> {item.blog_title} <br />
-              <strong>Requested by:</strong> {item.requestedBy} <br />
-              <strong>Reason:</strong> {item.reason} <br />
-              <div className="request-actions">
-                <button
-                  onClick={() => {
-                    handleApprove(item.requestId);
-                  }}
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => {
-                    handleReject(item.requestId);
-                  }}
-                >
-                  Reject
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      <div className="dashboard-container">
+        <h1>Dashboard</h1>
+        {manageRequestsData.length === 0 ? (
+          <div>No Requests pending</div>
+        ) : (
+          <div className="requests-grid">
+            {manageRequestsData.map((item) =>
+              item.request_type === "delete" ?
+               <DeleteCard key={item.requested_at} item={item} handleBlogRequestApprove={handleBlogRequestApprove} handleBlogRequestReject={handleBlogRequestReject} /> 
+               :
+                <UpdateCard key={item.requested_at} item={item} handleBlogRequestApprove={handleBlogRequestApprove} handleBlogRequestReject={handleBlogRequestReject}/>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

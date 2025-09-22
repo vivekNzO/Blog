@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import API from "../utils/axios";
 import "../styles/BlogDetail.css"
 
@@ -7,6 +7,7 @@ const BlogDetail = ({ blogsData }) => {
   const { id } = useParams();
   console.log(id)
   const [data,setData] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -26,10 +27,15 @@ const BlogDetail = ({ blogsData }) => {
   if (!data) return <p>Blog not found</p>;
 
   return (
+    <div>
     <div className="blog-detail">
       <h1>{data.title}</h1>
       <p>{data.content}</p>
+      <div className="blog-footer">
       <div className="author">Author: {data.username}</div>
+      <button onClick={()=>navigate(`/blog/update/${data.id}`)}>Edit</button>
+      </div>
+    </div>
     </div>
   );
 };

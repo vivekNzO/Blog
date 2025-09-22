@@ -32,3 +32,58 @@
   border-top: 1px solid #eee;
   padding-top: 15px;
 }
+
+
+.blog-footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blog-footer button{
+  margin-top: 30px;
+  padding-top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+}
+
+.blog-footer button:hover{
+  text-decoration: underline;
+}
+
+.actions{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+
+}
+
+.actions button:first-child {
+  background-color: #28a745;
+  color: white;
+}
+
+.actions button:first-child:hover {
+  background-color: #218838;
+}
+
+.actions button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+.actions button:last-child:hover {
+  background-color: #c82333;
+}
+
+
+.actions button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
