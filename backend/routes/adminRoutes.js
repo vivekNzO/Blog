@@ -1,5 +1,5 @@
 import express from 'express'
-import { approveDeleteRequest, approveManageRequests, getDeleteRequests, getManageRequests, rejectDeleteRequest, rejectManageRequests } from '../controllers/adminControllers.js'
+import {  approveManageRequests,  getManageRequests,  rejectManageRequests } from '../controllers/adminControllers.js'
 
 const router = express.Router()
 

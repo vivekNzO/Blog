@@ -12,6 +12,7 @@ import { authMiddleware } from './middlewares/authMiddleware.js';
 import { initDB } from './lib/initDB.js';
 import { checkAdmin } from './middlewares/checkAdmin.js';
 import adminRoutes from './routes/adminRoutes.js'
+import categoryRoutes from './routes/categoryRoutes.js'
 // import swagger from './swagger.js';
 
 const app = express();
@@ -40,6 +41,7 @@ const connectDB = async()=>{
 app.use("/auth",authRoutes)
 app.use("/blog",authMiddleware,blogRoutes)
 app.use("/admin",authMiddleware,checkAdmin,adminRoutes)
+app.use("/categories",authMiddleware,categoryRoutes)
 
 app.listen(PORT,()=>{
     console.log(`Server is running on PORT `+PORT);

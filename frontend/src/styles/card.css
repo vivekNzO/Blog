@@ -1,15 +1,4 @@
-/* .blogs-container {
-  padding: 40px;
-  text-align: center;
-  background-color: #f9f9f9;
-  min-height: 100vh;
-}
 
-.blogs-container h1 {
-  margin-bottom: 20px;
-  font-size: 2rem;
-  color: #333;
-} */
 
 .blogs-list {
   display: grid;
@@ -32,7 +21,7 @@
   flex-direction: column;
   justify-content: space-between;
   overflow-wrap: break-word;
-  overflow:hidden;
+  overflow:scroll;
   height: 350px;
 
   /* background-color: yellow; */
@@ -59,7 +48,10 @@
   justify-content: space-between;
   cursor: pointer;
 }
-
+.editable span:hover{
+    text-decoration: underline;
+    color: red;
+}
 .author {
   margin: auto;
 }
@@ -76,7 +68,6 @@ button:hover {
 
 .card-content {
   flex-grow: 1;       /* takes all remaining space */
-  overflow: auto;     /* scroll if content is too long */
+  overflow: hidden;     /* scroll if content is too long */
   margin-bottom: 5px; /* space before author */
 }
-

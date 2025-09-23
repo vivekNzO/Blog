@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../utils/axios";
 import "../styles/BlogDetail.css"
+import parse from "html-react-parser";
 
 const BlogDetail = ({ blogsData }) => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const BlogDetail = ({ blogsData }) => {
     <div>
     <div className="blog-detail">
       <h1>{data.title}</h1>
-      <p>{data.content}</p>
+      <p>{parse(data.content)}</p>
       <div className="blog-footer">
       <div className="author">Author: {data.username}</div>
       <button onClick={()=>navigate(`/blog/update/${data.id}`)}>Edit</button>

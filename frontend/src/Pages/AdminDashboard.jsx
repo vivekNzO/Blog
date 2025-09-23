@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../utils/axios";
 import "../styles/adminDashboard.css";
-import DeleteCard from "../components/DeleteCard";
+
 import UpdateCard from "../components/UpdateCard";
 
 const AdminDashboard = () => {
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
     try {
       const res = await API.post(`/admin/blog-requests/${requestId}/approved`);
       setManageRequestsData(
-        manageRequestsData.filter((item) => item.requestId !== requestId)
+        manageRequestsData.filter((item) => item.id !== requestId)
       );
       alert("Blog approved successfully");
     } catch (error) {
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
     try {
       const res = await API.post(`/admin/blog-requests/${requestId}/rejected`);
       setManageRequestsData(
-        manageRequestsData.filter((item) => item.requestId !== requestId)
+        manageRequestsData.filter((item) => item.id !== requestId)
       );
       alert("Blog rejected successfully");
     } catch (error) {
@@ -74,10 +74,7 @@ const AdminDashboard = () => {
         ) : (
           <div className="requests-grid">
             {manageRequestsData.map((item) =>
-              item.request_type === "delete" ?
-               <DeleteCard key={item.requested_at} item={item} handleBlogRequestApprove={handleBlogRequestApprove} handleBlogRequestReject={handleBlogRequestReject} /> 
-               :
-                <UpdateCard key={item.requested_at} item={item} handleBlogRequestApprove={handleBlogRequestApprove} handleBlogRequestReject={handleBlogRequestReject}/>
+                <UpdateCard key={item.id} item={item} handleBlogRequestApprove={handleBlogRequestApprove} handleBlogRequestReject={handleBlogRequestReject}/>
             )}
           </div>
         )}

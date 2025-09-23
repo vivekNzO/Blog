@@ -60,3 +60,7 @@
 .header{
   background-color: #000B58;
 }
+
+.my-editor .ck-editor__editable {
+  min-height: 400px;
+}

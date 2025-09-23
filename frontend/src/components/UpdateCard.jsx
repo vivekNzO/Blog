@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import parse from "html-react-parser"
 
 const UpdateCard = ({
   item,
@@ -9,28 +10,30 @@ const UpdateCard = ({
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate(`/viewRequest/${item.requestId}`)}
+      onClick={() => navigate(`/viewRequest/${item.id}`)}
       className="request-card"
-      key={item.requestId}
+      key={item.id}
     >
-      <div className={`badge ${item.request_type}`}>
+    <div>
+      {/* <div className={`badge ${item.request_type}`}>
         {item.request_type.toUpperCase()}
-      </div>
-      <br />
-      <strong>Blog:</strong> {item.new_title} <br />
+      </div> */}
+      {/* <br /> */}
+      <strong>Blog:</strong> {item.title} <br />
       <strong>Content: </strong>
-      {item.new_content?.length > 30 ? (
-        <span>{item.new_content.slice(0, 30)}+" ..."</span>
+      {item.content?.length > 30 ? (
+        <span>{parse(item.content.slice(0, 30))} ...</span>
       ) : (
-        <span>{item.new_content}</span>
+        <span>{parse(item.content)}</span>
       )}
       <br />
-      <strong>Requested by:</strong> {item.requested_by} <br />
+      <strong>Requested by:</strong> {item.username} <br />
+      </div>
       <div className="request-actions">
         <button
           onClick={(e) => {
             e.stopPropagation()
-            handleBlogRequestApprove(item.requestId);
+            handleBlogRequestApprove(item.id);
           }}
         >
           Approve
@@ -38,7 +41,7 @@ const UpdateCard = ({
         <button
           onClick={(e) => {
             e.stopPropagation()
-            handleBlogRequestReject(item.requestId);
+            handleBlogRequestReject(item.id);
           }}
         >
           Reject

@@ -11,7 +11,8 @@ export const initDB = async () => {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(50) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                role ENUM('user','admin') DEFAULT 'user'
+                role_id INT NOT NULL,
+                FOREIGN KEY(role_id) REFERENCES roles(id) ON DELETE CASCADE
             )
         `);
 
@@ -23,9 +24,18 @@ export const initDB = async () => {
                 title VARCHAR(25) NOT NULL,
                 content TEXT NOT NULL,
                 author_id INT,
+                status ENUM('pending','approved','rejected') DEFAULT 'pending',
                 FOREIGN KEY(author_id) references users(id) ON DELETE CASCADE
             )
             `);
+
+    // CREATE TABLE roles
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS roles(
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      role ENUM('admin','user') DEFAULT 'user'
+      )
+      `)
 
     // DELETE REQUESTS TABLE
 
@@ -45,21 +55,29 @@ export const initDB = async () => {
 
     // MANAGE REQUESTS TABLE for update, delete and create handlers
 
+    // await pool.query(`
+    //     CREATE TABLE IF NOT EXISTS manage_requests(
+    //         id INT PRIMARY KEY AUTO_INCREMENT,
+    //         blog_id INT NULL,
+    //         request_type ENUM('create','update','delete') NOT NULL,
+    //         new_title VARCHAR(255)  NULL,
+    //         new_content TEXT  NULL,
+    //         reason TEXT NULL,
+    //         status ENUM('approved','rejected','pending') default 'pending',
+    //         requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    //         requested_by INT NOT NULL,
+    //         FOREIGN KEY (blog_id) REFERENCES blogs(id) ON DELETE CASCADE,
+    //         FOREIGN KEY (requested_by) REFERENCES users(id) ON DELETE CASCADE
+    //     )
+    //     `)
+
     await pool.query(`
-        CREATE TABLE IF NOT EXISTS manage_requests(
-            id INT PRIMARY KEY AUTO_INCREMENT,
-            blog_id INT NULL,
-            request_type ENUM('create','update','delete') NOT NULL,
-            new_title VARCHAR(255)  NULL,
-            new_content TEXT  NULL,
-            reason TEXT NULL,
-            status ENUM('approved','rejected','pending') default 'pending',
-            requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            requested_by INT NOT NULL,
-            FOREIGN KEY (blog_id) REFERENCES blogs(id) ON DELETE CASCADE,
-            FOREIGN KEY (requested_by) REFERENCES users(id) ON DELETE CASCADE
-        )
-        `)
+      CREATE TABLE IF NOT EXISTS categories(
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        category VARCHAR(255) NOT NULL,
+        parent_id INT DEFAULT NULL
+      )
+      `)
 
     console.log("Database initialized successfully");
   } catch (error) {

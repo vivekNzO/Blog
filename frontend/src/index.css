@@ -3,3 +3,29 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.react-dropdown-tree-select {
+  width: 100%;       /* stretch to parent */
+  max-width: 400px;  /* optional max width */
+}
+
+.react-dropdown-tree-select .rDTSInput {
+  width: 100%;       /* input box full width */
+}
+
+.react-dropdown-tree-select .rDTSNode {
+  white-space: normal; /* prevent text cutoff */
+}
+
+.react-dropdown-tree-select .rDTSNodes {
+  max-height: 300px;   /* scrollable dropdown */
+  overflow-y: auto;
+}
+
+.category-selector {
+    /* all: "initial"; */
+    all: "revert";
+    display: "block";   
+    width: "100%";
+}
+
