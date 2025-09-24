@@ -20,7 +20,7 @@ const Card = ({ blog, handleDelete }) => {
       <div className="card-footer">
         <div className="author">{`Author: ${blog.username}`}</div>
       </div>
-      {authUser?.role === "admin" && (
+      {authUser?.role === 1 && (
         <div className="editable">
           <span
             onClick={(e) => {

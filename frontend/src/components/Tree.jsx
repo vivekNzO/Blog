@@ -29,6 +29,7 @@ const Tree = ({ setSelectedCategory }) => {
   }, []);
   return (
     <TreeSelect
+    placeholder={"Select Category"}
       value={value}
       treeData={treeData}
       onChange={handleChange}

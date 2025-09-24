@@ -11,8 +11,8 @@ export const handleSignUp = async (req,res)=>{
             return res.status(400).json({message:"User already exists"})
         }
         const [result] = await pool.query(`
-                INSERT INTO users (username,password,role) VALUES (?,?,?)
-            `,[username,password,"user"])
+                INSERT INTO users (username,password,role_id) VALUES (?,?,?)
+            `,[username,password,2])
 
         const [rows] = await pool.query(`
             SELECT * FROM users where id = ?
@@ -20,7 +20,7 @@ export const handleSignUp = async (req,res)=>{
         const newUser = rows[0]
         // console.log(newUser)
         const token = generateToken(newUser,res)
-        res.status(201).json({message:"User created successfully",user:{id:newUser.id,username:newUser.username,role:newUser.role},token})
+        res.status(201).json({message:"User created successfully",user:{id:newUser.id,username:newUser.username,role:newUser.role_id},token})
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"error in SignUp controller"})
@@ -38,7 +38,7 @@ export const handleLogin = async(req,res)=>{
         if(user.password !== password)return res.status(401).json({message:"Invalid Credentials"})
         const token = generateToken(user,res)
         console.log(user)
-        res.status(200).json({message:"User successfully logged in",user:{id:user.id,username:user.username,role:user.role},token})
+        res.status(200).json({message:"User successfully logged in",user:{id:user.id,username:user.username,role:user.role_id},token})
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"Error in Login Controller"})

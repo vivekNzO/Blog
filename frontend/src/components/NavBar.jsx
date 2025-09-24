@@ -12,7 +12,7 @@ const NavBar = () => {
         <h1 onClick={()=>navigate("/") }>BLOG APPLICATION</h1>
         <div>
 
-        {authUser?.role==='admin' && 
+        {authUser?.role===1 && 
         <button onClick={()=>navigate("/admin/dashboard")}>Dashboard</button>
         }
         {authUser &&

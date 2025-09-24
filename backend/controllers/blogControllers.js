@@ -47,7 +47,7 @@ export const updateBlog = async (req, res) => {
       return res.status(404).json({ message: "Blogs not found" });
     const blog = rows[0];
     // check for user or admin
-    if (req.user.role !== "admin" && blog.author_id !== req.user.id) {
+    if (req.user.role !== 1 && blog.author_id !== req.user.id) {
       return res
         .status(403)
         .json({ message: "Forbidden : not allowed to update this blog" });
@@ -78,7 +78,7 @@ export const deleteBlog = async (req, res) => {
     if (rows.length === 0)
       return res.status(404).json({ message: "Blog does not exists" });
     const blog = rows[0];
-    if (req.user.role !== "admin" && req.user.id!==blog.author_id) {
+    if (req.user.role !== 1 && req.user.id!==blog.author_id) {
       return res.status(403).json({ message: "Forbidden Action" });
     }
     await pool.query(

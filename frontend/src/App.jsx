@@ -36,7 +36,7 @@ function App() {
         <Route path="/blog/update/:id" element={authUser?<EditBlog/>:<Navigate to="/login" />}/>
         <Route path='/blog/createblog' element={authUser?<CreateBlog/>:<Navigate to="/login"/>} />
         <Route path='/blog/myblogs' element={authUser?<MyBlogs/>:<Navigate to="/login"/>} />
-        <Route path='/admin/dashboard' element= {authUser?.role==='admin'?<AdminDashboard/>:<Navigate to="/login"/>}/>
+        <Route path='/admin/dashboard' element= {authUser?.role===1?<AdminDashboard/>:<Navigate to="/login"/>}/>
         <Route path='/blog/:id' element={authUser? <BlogDetail/> : <Navigate to="/login"/>}/>
         <Route  path='/viewRequest/:requestId' element={authUser? <ViewRequest/> : <Navigate to="/login" />} />
       </Routes> 

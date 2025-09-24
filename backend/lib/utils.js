@@ -6,7 +6,7 @@ dotenv.config()
 const secret = process.env.JWT_SECRET;
 
 export function generateToken(user,res){
-    const token = jwt.sign({id:user.id,username:user.username,role:user.role},secret,{
+    const token = jwt.sign({id:user.id,username:user.username,role:user.role_id},secret,{
         expiresIn:"7d",
     })
     res.cookie("jwt",token,{

@@ -60,7 +60,7 @@ const MyBlogs = () => {
                 <p>{parse(blog.content)}</p>
               </div>
               <div className="card-footer">
-                {authUser?.role === "admin" && (
+                {authUser?.role === 1 && (
                   <div className="editable">
                     <button
                       onClick={(e) => {

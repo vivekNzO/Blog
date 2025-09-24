@@ -29,14 +29,14 @@ app.use(cookieParser());
 const swaggerDoc = YAML.load("./swagger.yaml")
 app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
-const connectDB = async()=>{
-    try {
-        const conn = await mongoose.connect(process.env.MONGO_URI)
-        console.log(`DB connected to ${conn.connection.host}`)
-    } catch (error) {
-        console.log('Mongodb connection error',error)
-    }
-}
+// const connectDB = async()=>{
+//     try {
+//         const conn = await mongoose.connect(process.env.MONGO_URI)
+//         console.log(`DB connected to ${conn.connection.host}`)
+//     } catch (error) {
+//         console.log('Mongodb connection error',error)
+//     }
+// }
 
 app.use("/auth",authRoutes)
 app.use("/blog",authMiddleware,blogRoutes)

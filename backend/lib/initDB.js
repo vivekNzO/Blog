@@ -2,10 +2,16 @@ import pool from "../config/db.js";
 
 export const initDB = async () => {
   try {
-    await pool.query(`CREATE DATABASE IF NOT EXISTS blogapp`);
-    await pool.query(`USE blogapp`);
+    await pool.query(`CREATE DATABASE IF NOT EXISTS blogapplicationcrud`);
+    await pool.query(`USE blogapplicationcrud`);
 
     // USERS TABLE
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS roles(
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      role ENUM('admin','user') DEFAULT 'user'
+      )
+      `);
     await pool.query(`
             CREATE TABLE IF NOT EXISTS users(
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,12 +36,6 @@ export const initDB = async () => {
             `);
 
     // CREATE TABLE roles
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS roles(
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      role ENUM('admin','user') DEFAULT 'user'
-      )
-      `)
 
     // DELETE REQUESTS TABLE
 
@@ -77,9 +77,10 @@ export const initDB = async () => {
         category VARCHAR(255) NOT NULL,
         parent_id INT DEFAULT NULL
       )
-      `)
+      `);
 
     console.log("Database initialized successfully");
+    console.log("Connected to DB:", process.env.DB_NAME);
   } catch (error) {
     console.log("Error initializing database", error);
   }
